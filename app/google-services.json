@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "12668912848",
+    "firebase_url": "https://od-system.firebaseio.com",
+    "project_id": "od-system",
+    "storage_bucket": "od-system.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12668912848:android:480c7138fc33de23",
+        "android_client_info": {
+          "package_name": "com.darshanbshah.odsystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12668912848-vt46iovg54qfoqopmfhoeqpdhdki93r7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsr6LJy0PmWyQfaqBcP-6OT6Mhzdvfma4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
