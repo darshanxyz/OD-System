@@ -1,6 +1,8 @@
 package com.darshanbshah.odsystem;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,14 +28,22 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private ProgressDialog dialog;
 
     private static int RC_SIGN_IN = 0;
     private static String TAG = "MAIN_ACTIVITY";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
+
+        if (mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(getApplicationContext(), RollNumber.class));
+            finish();
+        }
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -50,9 +60,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this).addApi(Auth.GOOGLE_SIGN_IN_API, options).build();
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
+
+        dialog = new ProgressDialog(this);
     }
 
     public void login() {
+        dialog.setMessage("Logging in. Please wait.");
+        dialog.show();
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -93,7 +107,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 Log.d("AUTH", "signInWithCredential: onComplete: " + task.isSuccessful());
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), RollNumber.class));
             }
         });
     }

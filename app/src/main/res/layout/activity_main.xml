@@ -12,7 +12,17 @@
         android:layout_height="wrap_content"
         android:id="@+id/sign_out_button"
         android:onClick="signOut"
-        style="@android:style/Widget.Material.Button.ButtonBar.AlertDialog"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:textColor="@color/colorAccent"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sign_out_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="66dp"
+        android:id="@+id/welcomeText"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 </RelativeLayout>
