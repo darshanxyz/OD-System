@@ -10,18 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.darshanbshah.odsystem.RollNumber">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="167dp"
-        android:id="@+id/rollNumberEditText"
-        android:hint="Amrita Roll Number"
-        android:textAlignment="center" />
-
     <Button
         android:text="Sign Out"
         android:layout_width="wrap_content"
@@ -32,14 +20,34 @@
         android:layout_alignParentEnd="true"
         android:onClick="signOut" />
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_marginTop="51dp"
+        android:id="@+id/rollNumberEditText"
+        android:hint="Amrita Roll Number"
+        android:textAlignment="center"
+        android:layout_below="@+id/button3"
+        android:layout_alignParentStart="true" />
+
     <Button
         android:text="Continue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="42dp"
         android:id="@+id/continueButton"
         style="@style/Widget.AppCompat.Button.Colored"
+        android:onClick="nextAct"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="67dp" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/rollNumberEditText"
         android:layout_centerHorizontal="true"
-        android:onClick="nextAct" />
+        android:layout_marginTop="81dp"
+        android:id="@+id/spinner" />
 </RelativeLayout>

@@ -64,19 +64,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         dialog = new ProgressDialog(this);
     }
 
-    public void login() {
-        dialog.setMessage("Logging in. Please wait.");
-        dialog.show();
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG, "Connection failed");
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -85,6 +72,21 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 break;
         }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -108,21 +110,20 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             public void onComplete(@NonNull Task<AuthResult> task) {
                 Log.d("AUTH", "signInWithCredential: onComplete: " + task.isSuccessful());
                 startActivity(new Intent(getApplicationContext(), RollNumber.class));
+                dialog.hide();
             }
         });
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d(TAG, "Connection failed");
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
+    public void login() {
+        dialog.setMessage("Logging in. Please wait.");
+        dialog.show();
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 }
