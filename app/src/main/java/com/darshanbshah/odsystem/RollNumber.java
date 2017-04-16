@@ -120,18 +120,18 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
 
 
 
-//        SharedPreferences preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
-//
-//        if(preferences.getBoolean("activity_executed", false)){
-//            Intent intent = new Intent(this, MainActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
-//        else {
-//            SharedPreferences.Editor edit = preferences.edit();
-//            edit.putBoolean("activity_executed", true);
-//            edit.commit();
-//        }
+        SharedPreferences preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
+
+        if(preferences.getBoolean("activity_executed", false)){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else {
+            SharedPreferences.Editor edit = preferences.edit();
+            edit.putBoolean("activity_executed", true);
+            edit.commit();
+        }
 
 
     }
