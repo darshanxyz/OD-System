@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.MainThread;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -36,19 +37,28 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-    DatabaseReference root = database.getReference();
-    DatabaseReference student = root.child("Student");
-    DatabaseReference adv = root.child("Advisors");
-    DatabaseReference id = student.child(mAuth.getCurrentUser().getUid());
-    DatabaseReference roll_no = id.child("RollNumber");
-    DatabaseReference email = id.child("Email");
-    DatabaseReference advisor = id.child("Advisor");
+    DatabaseReference root;
+    DatabaseReference student;
+    DatabaseReference adv;
+    DatabaseReference id;
+    DatabaseReference roll_no;
+    DatabaseReference email;
+    DatabaseReference advisor;
 
     List<String> list = new ArrayList<String>();
     List<String> lst = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        root = database.getReference();
+        student = root.child("Student");
+        adv = root.child("Advisors");
+        id = student.child(mAuth.getCurrentUser().getUid());
+        roll_no = id.child("RollNumber");
+        email = id.child("Email");
+        advisor = id.child("Advisor");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_roll_number);
         rollNumber = (EditText)findViewById(R.id.rollNumberEditText);
@@ -106,6 +116,8 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
 
             }
         });
+
+
 
 
 //        SharedPreferences preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);

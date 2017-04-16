@@ -11,10 +11,18 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,19 +35,77 @@ public class MainActivity extends AppCompatActivity {
     String reasonString, fromDate, toDate, full;
     Boolean fullDay = false;
 
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference root;
+    DatabaseReference student;
+    DatabaseReference adv;
+    DatabaseReference id;
+    DatabaseReference roll_no;
+    DatabaseReference email;
+    DatabaseReference advisor;
+
+    String recepient = "";
+
+    List<String> list1 = new ArrayList<String>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
+
+        root = database.getReference();
+        student = root.child("Student");
+        adv = root.child("Advisors");
+        id = student.child(mAuth.getCurrentUser().getUid());
+        roll_no = id.child("RollNumber");
+        email = id.child("Email");
+        advisor = id.child("Advisor");
+
+
         welcomeText = (TextView)findViewById(R.id.welcomeText);
         welcomeText.setText("Welcome " + mAuth.getCurrentUser().getEmail());
         from = (TextView)findViewById(R.id.fromDateTV);
         to = (TextView)findViewById(R.id.toDateTV);
         frameLayout = (FrameLayout) findViewById(R.id.hours_frame_layout);
         reason = (EditText)findViewById(R.id.reasonEditText);
+
+        student.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                for(DataSnapshot dsp : dataSnapshot.getChildren()){
+                    if (dsp.getKey().toString().equals("Advisor")) {
+                        list1.add(String.valueOf(dsp.getValue()));
+                        Log.e("E-MAIL ", String.valueOf(dsp.getValue()));
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
+
 
 
 
@@ -95,8 +161,10 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setData(Uri.parse("mailto:"));
-        String []recepients = {""};
-        intent.putExtra(Intent.EXTRA_EMAIL, recepients);
+
+
+//        Log.e("Recepient", recepient);
+        intent.putExtra(Intent.EXTRA_EMAIL, recepient);
         intent.putExtra(Intent.EXTRA_SUBJECT, "OD Request");
         intent.putExtra(Intent.EXTRA_TEXT, "Reason: " + reasonString + '\n' + "From: " + fromDate + '\n' + "To: " + toDate + '\n' + "Full day: " + full);
         intent.setType("message/rfc822");
