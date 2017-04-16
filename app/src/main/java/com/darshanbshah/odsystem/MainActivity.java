@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView welcomeText;
     Calendar calendar = Calendar.getInstance();
     TextView from, to;
+    FrameLayout frameLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         welcomeText.setText("Welcome " + mAuth.getCurrentUser().getEmail());
         from = (TextView)findViewById(R.id.fromDateTV);
         to = (TextView)findViewById(R.id.toDateTV);
+        frameLayout = (FrameLayout) findViewById(R.id.hours_frame_layout);
     }
 
     public void onClickFromDatePicker(View view) {
@@ -50,6 +53,22 @@ public class MainActivity extends AppCompatActivity {
             to.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
         }
     };
+
+    public void onFullDayClick(View view) {
+        if(frameLayout != null) {
+            frameLayout.setVisibility(View.INVISIBLE);
+        }
+
+    }
+
+    public void onHoursClick(View view) {
+        android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction transaction = manager.beginTransaction();
+        HoursFragment hoursFragment = new HoursFragment();
+        frameLayout.setVisibility(View.VISIBLE);
+        transaction.add(R.id.hours_frame_layout, hoursFragment);
+        transaction.commit();
+    }
 
     public void signOut(View view) {
         mAuth.signOut();

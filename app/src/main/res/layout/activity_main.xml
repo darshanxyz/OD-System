@@ -123,15 +123,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/fullDayRadioButton"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:onClick="onFullDayClick" />
 
                 <RadioButton
                     android:text="A few hours"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/hoursRadioButton"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:onClick="onHoursClick" />
             </RadioGroup>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/hours_frame_layout"
+                android:layout_marginTop="@dimen/activity_vertical_margin">
+
+            </FrameLayout>
 
             <Button
                 android:text="Request OD"
