@@ -58,9 +58,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         };
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this).addApi(Auth.GOOGLE_SIGN_IN_API, options).build();
-
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-
         dialog = new ProgressDialog(this);
     }
 
