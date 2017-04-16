@@ -2,6 +2,7 @@ package com.darshanbshah.odsystem;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     TextView from, to;
     FrameLayout frameLayout;
     EditText reason;
+    String reasonString, fromDate, toDate, full;
+    Boolean fullDay = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,15 +70,8 @@ public class MainActivity extends AppCompatActivity {
         if(frameLayout != null) {
             frameLayout.setVisibility(View.INVISIBLE);
         }
+        fullDay = true;
 
-    }
-
-
-    StringBuilder checks = new StringBuilder();
-
-    public void hour1Checked(View view) {
-        checks.append("1, ");
-        Toast.makeText(getApplicationContext(), checks, Toast.LENGTH_SHORT).show();
     }
 
     public void onHoursClick(View view) {
@@ -87,13 +83,29 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    String reasonString, fromDate, toDate;
     public void onRequestClick(View view) {
         reasonString = reason.getText().toString();
         fromDate = from.getText().toString();
         toDate = to.getText().toString();
+        if (fullDay == true) {
+            full = "Yes";
+        }
+        else {
+            full = "No";
+        }
 
-        Log.e("DATA: ", reasonString + ", " + fromDate + ", " + toDate);
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setData(Uri.parse("mailto:"));
+        String []recepients = {""};
+        intent.putExtra(Intent.EXTRA_EMAIL, recepients);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "OD Request");
+        intent.putExtra(Intent.EXTRA_TEXT, "Reason: " + reasonString + '\n' + "From: " + fromDate + '\n' + "To: " + toDate + '\n' + "Full day: " + full);
+        intent.setType("message/rfc822");
+        Intent chooser = Intent.createChooser(intent, "Send email");
+        startActivity(chooser);
+
+
+        Log.e("DATA: ", reasonString + ", " + fromDate + ", " + toDate + ", " + full);
     }
 
     public void signOut(View view) {
