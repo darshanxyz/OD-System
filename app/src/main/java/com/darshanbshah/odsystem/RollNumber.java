@@ -38,12 +38,14 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
 
     DatabaseReference root = database.getReference();
     DatabaseReference student = root.child("Student");
+    DatabaseReference adv = root.child("Advisors");
     DatabaseReference id = student.child(mAuth.getCurrentUser().getUid());
     DatabaseReference roll_no = id.child("RollNumber");
     DatabaseReference email = id.child("Email");
     DatabaseReference advisor = id.child("Advisor");
 
-
+    List<String> list = new ArrayList<String>();
+    List<String> lst = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,23 +54,72 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
         rollNumber = (EditText)findViewById(R.id.rollNumberEditText);
         advisors = (Spinner)findViewById(R.id.spinner);
 
+
+
+
+        adv.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot dsp : dataSnapshot.getChildren()){
+                    list.add(String.valueOf(dsp.getKey())); //add result into array list
+                    Log.e("VALUE: ", String.valueOf(dsp.getKey()));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.advisors, android.R.layout.simple_spinner_dropdown_item);
         advisors.setAdapter(adapter);
         advisors.setOnItemSelectedListener(this);
 
 
-        SharedPreferences preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
+        adv.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                for(DataSnapshot dsp : dataSnapshot.getChildren()){
+                    lst.add(String.valueOf(dsp.getValue()));
+                    Log.e("EMAILS: ", String.valueOf(dsp.getValue()));
+                }
+            }
 
-        if(preferences.getBoolean("activity_executed", false)){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        else {
-            SharedPreferences.Editor edit = preferences.edit();
-            edit.putBoolean("activity_executed", true);
-            edit.commit();
-        }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+//        SharedPreferences preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
+//
+//        if(preferences.getBoolean("activity_executed", false)){
+//            Intent intent = new Intent(this, MainActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }
+//        else {
+//            SharedPreferences.Editor edit = preferences.edit();
+//            edit.putBoolean("activity_executed", true);
+//            edit.commit();
+//        }
 
 
     }
@@ -77,8 +128,14 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         TextView textView = (TextView)view;
-        advisor.setValue(textView.getText());
-        Toast.makeText(this, textView.getText(), Toast.LENGTH_SHORT).show();
+        for (String advisorName: list) {
+            Log.d("EMAIL", advisorName);
+            Log.d("TEXTVIEW", textView.getText().toString());
+            if (textView.getText().equals(advisorName)) {
+                int i = list.indexOf(advisorName);
+                advisor.setValue(lst.get(i));
+            }
+        }
     }
 
     @Override

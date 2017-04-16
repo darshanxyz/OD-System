@@ -7,12 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -28,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     EditText reason;
     String reasonString, fromDate, toDate, full;
     Boolean fullDay = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
