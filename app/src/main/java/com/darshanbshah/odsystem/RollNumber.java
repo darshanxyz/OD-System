@@ -117,21 +117,18 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
             }
         });
 
-
-
-
-        SharedPreferences preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
-
-        if(preferences.getBoolean("activity_executed", false)){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        else {
-            SharedPreferences.Editor edit = preferences.edit();
-            edit.putBoolean("activity_executed", true);
-            edit.commit();
-        }
+//        SharedPreferences preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
+//
+//        if(preferences.getBoolean("activity_executed", false)){
+//            Intent intent = new Intent(this, MainActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }
+//        else {
+//            SharedPreferences.Editor edit = preferences.edit();
+//            edit.putBoolean("activity_executed", true);
+//            edit.commit();
+//        }
 
 
     }
@@ -155,15 +152,26 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
 
     }
 
+    int flag = 0;
     public void nextAct(View view) {
         if (TextUtils.isEmpty(rollNumber.getText().toString())) {
             Toast.makeText(this, "Enter Roll Number", Toast.LENGTH_SHORT).show();
         }
         else {
-            roll_no.setValue(rollNumber.getText().toString());
-            email.setValue(mAuth.getCurrentUser().getEmail());
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
+            for (String email : lst) {
+                if (email.equals(mAuth.getCurrentUser().getEmail())) {
+                    startActivity(new Intent(this, TeacherActivity.class));
+                    flag = 1;
+                    finish();
+                    break;
+                }
+            }
+            if (flag == 0) {
+                roll_no.setValue(rollNumber.getText().toString());
+                email.setValue(mAuth.getCurrentUser().getEmail());
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+            }
         }
     }
 

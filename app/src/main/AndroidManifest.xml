@@ -16,7 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".RollNumber"></activity>
+        <activity android:name=".RollNumber" />
+        <activity android:name=".TeacherActivity"></activity>
     </application>
 
 </manifest>

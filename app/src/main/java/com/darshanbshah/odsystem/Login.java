@@ -23,6 +23,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
     private GoogleApiClient mGoogleApiClient;
@@ -32,6 +35,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     private static int RC_SIGN_IN = 0;
     private static String TAG = "MAIN_ACTIVITY";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

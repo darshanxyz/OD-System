@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 for(DataSnapshot dsp : dataSnapshot.getChildren()){
-                    if (dsp.getKey().toString().equals("Advisor")) {
+                    if (dsp.getKey().toString().equals("Advisor"))  {
                         list1.add(String.valueOf(dsp.getValue()));
                         Log.e("E-MAIL ", String.valueOf(dsp.getValue()));
                     }
