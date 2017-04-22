@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,9 +31,12 @@ public class TeacherActivity extends AppCompatActivity {
     DatabaseReference adv;
     DatabaseReference student;
 
-    TextView t;
     List<String> uid_list = new ArrayList<String>();
     HashMap<String, String> uid_map = new HashMap<String, String>();
+
+    ListView listView;
+
+    CustomListAdapter adapter;
 
     String adv_name;
 
@@ -45,7 +49,7 @@ public class TeacherActivity extends AppCompatActivity {
         od = root.child("OD");
         adv = root.child("Advisors");
         student = root.child("Student");
-        t = (TextView)findViewById(R.id.textView);
+        listView = (ListView)findViewById(R.id.listView);
 
         adv.addChildEventListener(new ChildEventListener() {
             @Override
@@ -90,6 +94,14 @@ public class TeacherActivity extends AppCompatActivity {
                         uid_map.put(data.getKey(), data.getValue().toString());
                         uid_list.add(data.getKey());
                     }
+                }
+                adapter = new CustomListAdapter(getApplicationContext(), R.layout.list_item);
+                listView.setAdapter(adapter);
+
+                Log.e("UIDLIST_SIZE", String.valueOf(uid_list.size()));
+                for (String value: uid_list) {
+                    DataProvider provider = new DataProvider(value);
+                    adapter.add(provider);
                 }
             }
 
@@ -146,6 +158,7 @@ public class TeacherActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     public void signOut(View view) {
