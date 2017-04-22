@@ -33,6 +33,7 @@ public class TeacherActivity extends AppCompatActivity {
 
     List<String> uid_list = new ArrayList<String>();
     HashMap<String, String> uid_map = new HashMap<String, String>();
+    HashMap<String, String> student_map = new HashMap<String, String>();
 
     ListView listView;
 
@@ -132,9 +133,22 @@ public class TeacherActivity extends AppCompatActivity {
 //                for(DataSnapshot dsp : dataSnapshot.getChildren()){
 //                    if (uid_list.contains(dataSnapshot.getKey())) {
 //                        if (dsp.getKey().toString().equals("RollNumber"))  {
-//                            t.setText(dsp.getValue().toString());
+//
 //                        }
 //                    }
+//                }
+
+                //Code yet to be decided
+
+//                for (int i = 0; i < uid_list.size(); i++) {
+//                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+//                        if (dataSnapshot.getKey().equals(uid_list.get(i))) {
+//                            if (data.getKey().equals("RollNumber")) {
+//                                student_map.put(uid_list.get(i), data.getValue().toString());
+//                            }
+//                        }
+//                    }
+//
 //                }
             }
 
