@@ -27,6 +27,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class RollNumber extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
@@ -34,6 +35,9 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private EditText rollNumber;
     private Spinner advisors;
+
+    List<String> list = new ArrayList<String>();
+    List<String> lst = new ArrayList<String>();
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -45,8 +49,7 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
     DatabaseReference email;
     DatabaseReference advisor;
 
-    List<String> list = new ArrayList<String>();
-    List<String> lst = new ArrayList<String>();
+    HashMap <String,String> adv_map = new HashMap <String, String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,7 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
                     list.add(String.valueOf(dsp.getKey())); //add result into array list
                     Log.e("VALUE: ", String.valueOf(dsp.getKey()));
                 }
+                Log.e("LISTSIZE", String.valueOf(list.size()));
             }
 
             @Override
@@ -82,17 +86,20 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
             }
         });
 
+
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.advisors, android.R.layout.simple_spinner_dropdown_item);
         advisors.setAdapter(adapter);
         advisors.setOnItemSelectedListener(this);
 
-
         adv.addChildEventListener(new ChildEventListener() {
+            int i = 0;
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 for(DataSnapshot dsp : dataSnapshot.getChildren()){
                     lst.add(String.valueOf(dsp.getValue()));
                     Log.e("EMAILS: ", String.valueOf(dsp.getValue()));
+//                    adv_map.put(String.valueOf(dsp.getValue()), list.get(1));
+//                    ++i;
                 }
             }
 
@@ -116,6 +123,7 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
 
             }
         });
+        Log.e("LSTSIZE", String.valueOf(lst.size()));
 
 //        SharedPreferences preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
 //
