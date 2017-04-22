@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class TeacherActivity extends AppCompatActivity {
@@ -30,7 +31,10 @@ public class TeacherActivity extends AppCompatActivity {
     DatabaseReference student;
 
     TextView t;
-    List<String> list = new ArrayList<String>();
+    List<String> uid_list = new ArrayList<String>();
+    HashMap<String, String> uid_map = new HashMap<String, String>();
+
+    String adv_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +47,49 @@ public class TeacherActivity extends AppCompatActivity {
         student = root.child("Student");
         t = (TextView)findViewById(R.id.textView);
 
+        adv.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    if (mAuth.getCurrentUser().getEmail().equals(data.getValue().toString())) {
+                        Log.e("DATA_KEY", dataSnapshot.getKey());
+                        adv_name = dataSnapshot.getKey();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         od.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                for(DataSnapshot dsp : dataSnapshot.getChildren()){
-                    Toast.makeText(getApplicationContext(), dsp.getKey().toString(), Toast.LENGTH_SHORT).show();
+                if (dataSnapshot.getKey().equals(adv_name)) {
+                    Log.e("SNAP", dataSnapshot.getKey());
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        Log.e("OD_LIST", data.getKey() + " " + data.getValue());
+                        uid_map.put(data.getKey(), data.getValue().toString());
+                        uid_list.add(data.getKey());
+                    }
                 }
             }
 
@@ -75,11 +117,13 @@ public class TeacherActivity extends AppCompatActivity {
         student.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                for(DataSnapshot dsp : dataSnapshot.getChildren()){
-                    if (dsp.getKey().toString().equals("Email"))  {
-                        t.setText(dsp.getValue().toString());
-                    }
-                }
+//                for(DataSnapshot dsp : dataSnapshot.getChildren()){
+//                    if (uid_list.contains(dataSnapshot.getKey())) {
+//                        if (dsp.getKey().toString().equals("RollNumber"))  {
+//                            t.setText(dsp.getValue().toString());
+//                        }
+//                    }
+//                }
             }
 
             @Override
@@ -102,10 +146,6 @@ public class TeacherActivity extends AppCompatActivity {
 
             }
         });
-
-        for (String advName : list) {
-
-        }
     }
 
     public void signOut(View view) {
