@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -54,10 +55,11 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        FirebaseUser user = mAuth.getCurrentUser();
         root = database.getReference();
         student = root.child("Student");
         adv = root.child("Advisors");
-        id = student.child(mAuth.getCurrentUser().getUid());
+        id = student.child(user.getUid());
         roll_no = id.child("RollNumber");
         email = id.child("Email");
         advisor = id.child("Advisor");
@@ -92,14 +94,11 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
         advisors.setOnItemSelectedListener(this);
 
         adv.addChildEventListener(new ChildEventListener() {
-            int i = 0;
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 for(DataSnapshot dsp : dataSnapshot.getChildren()){
                     lst.add(String.valueOf(dsp.getValue()));
                     Log.e("EMAILS: ", String.valueOf(dsp.getValue()));
-//                    adv_map.put(String.valueOf(dsp.getValue()), list.get(1));
-//                    ++i;
                 }
             }
 
@@ -123,7 +122,6 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
 
             }
         });
-        Log.e("LSTSIZE", String.valueOf(lst.size()));
 
 //        SharedPreferences preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
 //
@@ -140,7 +138,6 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
 
 
     }
-
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -166,6 +163,7 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
             Toast.makeText(this, "Enter Roll Number", Toast.LENGTH_SHORT).show();
         }
         else {
+            Log.e("LST_SIZE", String.valueOf(lst.size()));
             for (String email : lst) {
                 if (email.equals(mAuth.getCurrentUser().getEmail())) {
                     startActivity(new Intent(this, TeacherActivity.class));

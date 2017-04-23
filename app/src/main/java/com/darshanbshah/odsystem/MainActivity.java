@@ -242,49 +242,21 @@ public class MainActivity extends AppCompatActivity {
         }
         final String str = adv_details.get(list1.get(0));
 
-        od.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                for(DataSnapshot dsp : dataSnapshot.getChildren()){
-                    Log.e("DSP_KEY", dsp.getValue().toString());
-                    od_flag = od.child(str).child(mAuth.getCurrentUser().getUid()).child("flag");
-                    od_from = od.child(str).child(mAuth.getCurrentUser().getUid()).child("from");
-                    od_to = od.child(str).child(mAuth.getCurrentUser().getUid()).child("to");
-                    od_reason = od.child(str).child(mAuth.getCurrentUser().getUid()).child("reason");
-                    od_full_day = od.child(str).child(mAuth.getCurrentUser().getUid()).child("full day");
+        od_flag = od.child(str).child(mAuth.getCurrentUser().getUid()).child("flag");
+        od_from = od.child(str).child(mAuth.getCurrentUser().getUid()).child("from");
+        od_to = od.child(str).child(mAuth.getCurrentUser().getUid()).child("to");
+        od_reason = od.child(str).child(mAuth.getCurrentUser().getUid()).child("reason");
+        od_full_day = od.child(str).child(mAuth.getCurrentUser().getUid()).child("full day");
 
-                    od_flag.setValue(1);
-                    od_from.setValue(fromDate);
-                    od_to.setValue(toDate);
-                    od_reason.setValue(reasonString);
-                    od_full_day.setValue(full);
-                }
-                reason.setText("");
-                from.setText("");
-                to.setText("");
+        od_flag.setValue(1);
+        od_from.setValue(fromDate);
+        od_to.setValue(toDate);
+        od_reason.setValue(reasonString);
+        od_full_day.setValue(full);
 
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        reason.setText("");
+        from.setText("");
+        to.setText("");
 
 //        recepient = list1.get(0);
 //

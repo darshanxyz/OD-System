@@ -1,38 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:id="@+id/list_item">
     
     <TextView
         android:id="@+id/listText"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="60dp"
         />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/listTextEmail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="@dimen/activity_vertical_margin">
-
-        <Button
-            android:text="Approve"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/approveButton"
-            android:background="@android:color/holo_green_light"
-            style="@style/Widget.AppCompat.Button.Colored" />
-
-        <Button
-            android:text="Deny"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/denyButton"
-            android:background="@color/colorAccent"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            style="@style/Widget.AppCompat.Button.Colored" />
-
-    </LinearLayout>
+        android:layout_height="40dp"
+        />
 
 </LinearLayout>

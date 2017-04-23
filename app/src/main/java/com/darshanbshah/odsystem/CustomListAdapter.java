@@ -7,11 +7,14 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +23,7 @@ public class CustomListAdapter extends ArrayAdapter {
 
 
     static class DataHandler {
-        TextView tv;
+        TextView tv, tv1;
     }
 
     List list = new ArrayList();
@@ -32,6 +35,12 @@ public class CustomListAdapter extends ArrayAdapter {
     public void add(Object object) {
         super.add(object);
         list.add(object);
+    }
+
+    @Override
+    public void remove(Object object) {
+        super.remove(object);
+        list.remove(object);
     }
 
     @Override
@@ -50,12 +59,13 @@ public class CustomListAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View row;
         row = convertView;
-        DataHandler handler;
+        final DataHandler handler;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(R.layout.list_item, parent, false);
             handler = new DataHandler();
             handler.tv = (TextView)row.findViewById(R.id.listText);
+            handler.tv1 = (TextView)row.findViewById(R.id.listTextEmail);
             row.setTag(handler);
         }
         else {
@@ -64,9 +74,10 @@ public class CustomListAdapter extends ArrayAdapter {
 
 //        Typeface one = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/BebasNeue Bold.ttf");
         DataProvider provider = (DataProvider) this.getItem(position);
-        handler.tv.setText(provider.getDetector());
+        handler.tv.setText(provider.getRollno());
+        handler.tv1.setText(provider.getReason());
 //        handler.tv.setTypeface(one);
-        handler.tv.setTextSize(30);
+        handler.tv.setTextSize(20);
         return row;
     }
 }

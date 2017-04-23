@@ -5,17 +5,53 @@ package com.darshanbshah.odsystem;
  */
 
 public class DataProvider {
-    private String detector;
+    private String key, rollno, reason, from, to;
 
-    public DataProvider(String detector) {
-        this.setDetector(detector);
+    public DataProvider(String key, String rollno, String reason, String from, String to) {
+        this.rollno = rollno;
+        this.reason = reason;
+        this.from = from;
+        this.to = to;
+        this.key = key;
     }
 
-    public String getDetector() {
-        return detector;
+    public String getKey() {
+        return key;
     }
 
-    public void setDetector(String detector) {
-        this.detector = detector;
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getRollno() {
+        return rollno;
+    }
+
+    public void setRollno(String rollno) {
+        this.rollno = rollno;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
     }
 }

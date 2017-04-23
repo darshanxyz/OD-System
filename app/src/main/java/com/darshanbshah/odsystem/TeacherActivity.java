@@ -1,12 +1,14 @@
 package com.darshanbshah.odsystem;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -15,31 +17,51 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+
 
 public class TeacherActivity extends AppCompatActivity {
 
+    class ODTable {
+        String flag, reason, from, to, fullday;
+
+        public ODTable(String flag, String reason, String from, String to, String fullday) {
+            this.flag = flag;
+            this.reason = reason;
+            this.from = from;
+            this.to = to;
+            this.fullday = fullday;
+        }
+
+    }
+    ODTable table;
+    int i = 0;
+    AlertDialog.Builder builder;
+    DataProvider itemValue;
     FirebaseAuth mAuth;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     DatabaseReference root;
-    DatabaseReference od;
     DatabaseReference adv;
     DatabaseReference student;
-
+    DatabaseReference od, od_flag, od_student;
+    String message = "";
     List<String> uid_list = new ArrayList<String>();
     HashMap<String, String> uid_map = new HashMap<String, String>();
     HashMap<String, String> student_map = new HashMap<String, String>();
-
+    Hashtable<String, ODTable> odtable = new Hashtable<String, ODTable>();
     ListView listView;
-
     CustomListAdapter adapter;
+    String adv_name, key, value, uid = "";
+    List<String> roll = new ArrayList<String>();
+    List<String> random = new ArrayList<String>();
+    List<DatabaseReference> od_student_list = new ArrayList<DatabaseReference>();
 
-    String adv_name;
+    String flag = "", reason = "", from = "", to = "", fullday = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +74,48 @@ public class TeacherActivity extends AppCompatActivity {
         student = root.child("Student");
         listView = (ListView)findViewById(R.id.listView);
 
+        student.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    uid = dataSnapshot.getKey();
+                    if (data.getKey().toString().equals("RollNumber")) {
+                        Log.e("MAPVAL", data.getValue().toString());
+                        roll.add(data.getValue().toString());
+                    }
+                }
+                for (int a = 0; a < roll.size(); a++) {
+                    uid_map.put(uid, roll.get(a));
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         adv.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     if (mAuth.getCurrentUser().getEmail().equals(data.getValue().toString())) {
-                        Log.e("DATA_KEY", dataSnapshot.getKey());
                         adv_name = dataSnapshot.getKey();
-
                     }
                 }
             }
@@ -89,20 +145,60 @@ public class TeacherActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot.getKey().equals(adv_name)) {
-                    Log.e("SNAP", dataSnapshot.getKey());
+                    Log.e("ADV_NAME", dataSnapshot.getKey());
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         Log.e("OD_LIST", data.getKey() + " " + data.getValue());
-                        uid_map.put(data.getKey(), data.getValue().toString());
                         uid_list.add(data.getKey());
+
                     }
                 }
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    for (DataSnapshot d : data.getChildren()) {
+                        Log.e("DATA_KEY", dataSnapshot.getKey());
+                        if (dataSnapshot.getKey().equals(adv_name))
+                            random.add(d.getValue().toString());
+                    }
+//                    for (int i = 0; i < random.size(); i++) {
+//                        Log.e("RANDOM_VALS", data.getKey() + ' ' + random.get(i));
+//
+//                    }
+                    if (random.size() != 0) {
+                        try {
+                            flag = random.get(0);
+                            from = random.get(1);
+                            fullday = random.get(2);
+                            reason = random.get(3);
+                            to = random.get(4);
+                            table = new ODTable(flag, reason, from, to, fullday);
+                            odtable.put(data.getKey(), table);
+                            random.clear();
+                        }
+                        catch (Exception e) {
+
+                        }
+
+                    }
+
+                }
+
                 adapter = new CustomListAdapter(getApplicationContext(), R.layout.list_item);
                 listView.setAdapter(adapter);
 
-                Log.e("UIDLIST_SIZE", String.valueOf(uid_list.size()));
-                for (String value: uid_list) {
-                    DataProvider provider = new DataProvider(value);
-                    adapter.add(provider);
+                Log.e("UIDLIST_SIZE", String.valueOf(uid_map.size()));
+
+                for (int i = 0; i < uid_list.size(); i++) {
+                    key = uid_list.get(i);
+                    value = uid_map.get(key);
+                    try {
+                        if (odtable.get(key).flag.equals("1")) {
+                            DataProvider provider = new DataProvider(key, value, odtable.get(key).reason, odtable.get(key).from, odtable.get(key).to);
+                            adapter.add(provider);
+                        }
+                    }
+                    catch (Exception e) {
+
+                    }
+
                 }
             }
 
@@ -127,53 +223,68 @@ public class TeacherActivity extends AppCompatActivity {
             }
         });
 
-        student.addChildEventListener(new ChildEventListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                for(DataSnapshot dsp : dataSnapshot.getChildren()){
-//                    if (uid_list.contains(dataSnapshot.getKey())) {
-//                        if (dsp.getKey().toString().equals("RollNumber"))  {
-//
-//                        }
-//                    }
-//                }
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+//                Toast.makeText(getApplicationContext(), String.valueOf(position), Toast.LENGTH_SHORT).show();
+                builder = new AlertDialog.Builder(TeacherActivity.this);
+                builder.setPositiveButton("Approve", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        od.addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                DataProvider item_key = (DataProvider)adapter.getItem(position);
+                                String item = item_key.getKey();
+//                                Toast.makeText(getApplicationContext(), item, Toast.LENGTH_SHORT).show();
+                                if (dataSnapshot.getKey().equals(adv_name)) {
+                                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                        if (data.getKey().equals(item)) {
+                                            od_flag = od.child(adv_name).child(item).child("flag");
+                                            od_flag.setValue(0);
+                                            od_student = od.child(adv_name).child(item);
+                                            od_student.removeValue();
+                                        }
+                                    }
+                                }
+                            }
 
-                //Code yet to be decided
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-//                for (int i = 0; i < uid_list.size(); i++) {
-//                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-//                        if (dataSnapshot.getKey().equals(uid_list.get(i))) {
-//                            if (data.getKey().equals("RollNumber")) {
-//                                student_map.put(uid_list.get(i), data.getValue().toString());
-//                            }
-//                        }
-//                    }
-//
-//                }
-            }
+                            }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-            }
+                            }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            }
+                            }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-            }
+                            }
+                        });
+                    }
+                });
+                itemValue = (DataProvider) adapter.getItem(position);
+                builder.setMessage("Take Action".toUpperCase());
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
-
     }
+
 
     public void signOut(View view) {
         mAuth.signOut();
