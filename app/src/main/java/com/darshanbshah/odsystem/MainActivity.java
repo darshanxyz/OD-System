@@ -1,6 +1,8 @@
 package com.darshanbshah.odsystem;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -45,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference roll_no;
     DatabaseReference email;
     DatabaseReference advisor;
-    DatabaseReference od;
-    DatabaseReference od_child_child;
+    DatabaseReference od, od_flag, od_from, od_to, od_reason, od_full_day;
 
     RollNumber r = new RollNumber();
 
@@ -222,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
         frameLayout.setVisibility(View.VISIBLE);
         transaction.add(R.id.hours_frame_layout, hoursFragment);
         transaction.commit();
+        fullDay = false;
     }
 
     public void onRequestClick(View view) {
@@ -244,11 +246,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 for(DataSnapshot dsp : dataSnapshot.getChildren()){
-                    if (dsp.getKey().equals(mAuth.getCurrentUser().getUid()))  {
-                        od_child_child = od.child(str).child(mAuth.getCurrentUser().getUid());
-                        od_child_child.setValue(1);
-                    }
+                    Log.e("DSP_KEY", dsp.getValue().toString());
+                    od_flag = od.child(str).child(mAuth.getCurrentUser().getUid()).child("flag");
+                    od_from = od.child(str).child(mAuth.getCurrentUser().getUid()).child("from");
+                    od_to = od.child(str).child(mAuth.getCurrentUser().getUid()).child("to");
+                    od_reason = od.child(str).child(mAuth.getCurrentUser().getUid()).child("reason");
+                    od_full_day = od.child(str).child(mAuth.getCurrentUser().getUid()).child("full day");
+
+                    od_flag.setValue(1);
+                    od_from.setValue(fromDate);
+                    od_to.setValue(toDate);
+                    od_reason.setValue(reasonString);
+                    od_full_day.setValue(full);
                 }
+                reason.setText("");
+                from.setText("");
+                to.setText("");
+
             }
 
             @Override
