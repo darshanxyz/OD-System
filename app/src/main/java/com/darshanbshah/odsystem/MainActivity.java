@@ -260,16 +260,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        recepient = list1.get(0);
 //
-//        Intent intent = new Intent(Intent.ACTION_SEND);
-//        intent.setData(Uri.parse("mailto:"));
-//
-//        Log.e("Recepient", recepient);
-//        intent.putExtra(Intent.EXTRA_EMAIL, recepient);
-//        intent.putExtra(Intent.EXTRA_SUBJECT, "OD Request");
-//        intent.putExtra(Intent.EXTRA_TEXT, "Reason: " + reasonString + '\n' + "From: " + fromDate + '\n' + "To: " + toDate + '\n' + "Full day: " + full);
-//        intent.setType("message/rfc822");
-//        Intent chooser = Intent.createChooser(intent, "Send email");
-//        startActivity(chooser);
+
 
 
         Log.e("DATA: ", reasonString + ", " + fromDate + ", " + toDate + ", " + full);

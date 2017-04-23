@@ -23,7 +23,7 @@ public class CustomListAdapter extends ArrayAdapter {
 
 
     static class DataHandler {
-        TextView tv, tv1;
+        TextView tv, tv1, tv2, tv3, tv4;
     }
 
     List list = new ArrayList();
@@ -65,7 +65,9 @@ public class CustomListAdapter extends ArrayAdapter {
             row = inflater.inflate(R.layout.list_item, parent, false);
             handler = new DataHandler();
             handler.tv = (TextView)row.findViewById(R.id.listText);
-            handler.tv1 = (TextView)row.findViewById(R.id.listTextEmail);
+            handler.tv1 = (TextView)row.findViewById(R.id.listTextReason);
+            handler.tv2 = (TextView)row.findViewById(R.id.fromText);
+            handler.tv3 = (TextView)row.findViewById(R.id.toText);
             row.setTag(handler);
         }
         else {
@@ -76,8 +78,13 @@ public class CustomListAdapter extends ArrayAdapter {
         DataProvider provider = (DataProvider) this.getItem(position);
         handler.tv.setText(provider.getRollno());
         handler.tv1.setText(provider.getReason());
+        handler.tv2.setText(provider.getFrom());
+        handler.tv3.setText(provider.getTo());
 //        handler.tv.setTypeface(one);
-        handler.tv.setTextSize(20);
+        handler.tv.setTextSize(30);
+        handler.tv1.setTextSize(20);
+        handler.tv2.setTextSize(20);
+        handler.tv3.setTextSize(20);
         return row;
     }
 }

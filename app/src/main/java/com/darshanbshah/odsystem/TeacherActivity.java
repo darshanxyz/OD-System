@@ -3,12 +3,15 @@ package com.darshanbshah.odsystem;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +41,7 @@ public class TeacherActivity extends AppCompatActivity {
         }
 
     }
+    String []recepients = {};
     ODTable table;
     int i = 0;
     AlertDialog.Builder builder;
@@ -154,30 +158,34 @@ public class TeacherActivity extends AppCompatActivity {
                 }
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     for (DataSnapshot d : data.getChildren()) {
-                        Log.e("DATA_KEY", dataSnapshot.getKey());
-                        if (dataSnapshot.getKey().equals(adv_name))
+                        if (dataSnapshot.getKey().equals(adv_name)) {
+                            Log.e("D_VAL", d.getValue().toString());
                             random.add(d.getValue().toString());
+                        }
+
                     }
 //                    for (int i = 0; i < random.size(); i++) {
 //                        Log.e("RANDOM_VALS", data.getKey() + ' ' + random.get(i));
 //
 //                    }
-                    if (random.size() != 0) {
-                        try {
-                            flag = random.get(0);
-                            from = random.get(1);
-                            fullday = random.get(2);
-                            reason = random.get(3);
-                            to = random.get(4);
-                            table = new ODTable(flag, reason, from, to, fullday);
-                            odtable.put(data.getKey(), table);
-                            random.clear();
-                        }
-                        catch (Exception e) {
+                    for (int i = 0; i < random.size(); i++) {
+                        if (random.size() != 0) {
+                            try {
+                                flag = random.get(0);
+                                from = random.get(1);
+                                fullday = random.get(2);
+                                reason = random.get(3);
+                                to = random.get(4);
+                                table = new ODTable(flag, reason, from, to, fullday);
+                                odtable.put(data.getKey(), table);
+                            }
+                            catch (Exception e) {
+
+                            }
 
                         }
-
                     }
+                    random.clear();
 
                 }
 
@@ -269,6 +277,17 @@ public class TeacherActivity extends AppCompatActivity {
 
                             }
                         });
+                        TextView textView = (TextView)findViewById(R.id.listText);
+                        textView.setTextColor(Color.parseColor("#12bfac"));
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setData(Uri.parse("mailto:"));
+
+                        intent.putExtra(Intent.EXTRA_EMAIL, recepients);
+                        intent.putExtra(Intent.EXTRA_SUBJECT, "OD Request");
+                        intent.putExtra(Intent.EXTRA_TEXT, "Reason: " + reason + '\n' + "From: " + from + '\n' + "To: " + to + '\n' + "Full day: " + fullday);
+                        intent.setType("message/rfc822");
+                        Intent chooser = Intent.createChooser(intent, "Send email");
+                        startActivity(chooser);
                     }
                 });
                 itemValue = (DataProvider) adapter.getItem(position);
