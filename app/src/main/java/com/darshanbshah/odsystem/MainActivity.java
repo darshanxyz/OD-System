@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
 //        recepient = list1.get(0);
 //
 
-
+        Toast.makeText(this, "OD has been requested", Toast.LENGTH_SHORT).show();
 
         Log.e("DATA: ", reasonString + ", " + fromDate + ", " + toDate + ", " + full);
     }

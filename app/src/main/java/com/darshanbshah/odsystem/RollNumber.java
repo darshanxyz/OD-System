@@ -1,5 +1,6 @@
 package com.darshanbshah.odsystem;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -51,6 +52,7 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
     DatabaseReference advisor;
 
     HashMap <String,String> adv_map = new HashMap <String, String>();
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,12 +95,34 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
         advisors.setAdapter(adapter);
         advisors.setOnItemSelectedListener(this);
 
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Please Wait");
+        dialog.show();
+
         adv.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 for(DataSnapshot dsp : dataSnapshot.getChildren()){
                     lst.add(String.valueOf(dsp.getValue()));
                     Log.e("EMAILS: ", String.valueOf(dsp.getValue()));
+                }
+                if (lst.contains(mAuth.getCurrentUser().getEmail())) {
+                    startActivity(new Intent(getApplicationContext(), TeacherActivity.class));
+                }
+                else {
+                    SharedPreferences preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
+
+                    if(preferences.getBoolean("activity_executed", false)){
+                        Intent intent = new Intent(RollNumber.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                        dialog.hide();
+                    }
+                    else {
+                        SharedPreferences.Editor edit = preferences.edit();
+                        edit.putBoolean("activity_executed", true);
+                        edit.commit();
+                    }
                 }
             }
 
@@ -123,18 +147,7 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
             }
         });
 
-//        SharedPreferences preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
-//
-//        if(preferences.getBoolean("activity_executed", false)){
-//            Intent intent = new Intent(this, MainActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
-//        else {
-//            SharedPreferences.Editor edit = preferences.edit();
-//            edit.putBoolean("activity_executed", true);
-//            edit.commit();
-//        }
+
 
 
     }
