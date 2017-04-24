@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -79,7 +80,7 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot dsp : dataSnapshot.getChildren()){
-                    list.add(String.valueOf(dsp.getKey())); //add result into array list
+                    list.add(String.valueOf(dsp.getKey()));
                     Log.e("VALUE: ", String.valueOf(dsp.getKey()));
                 }
                 Log.e("LISTSIZE", String.valueOf(list.size()));

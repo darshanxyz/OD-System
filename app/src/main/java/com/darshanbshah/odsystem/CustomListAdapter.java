@@ -23,7 +23,7 @@ public class CustomListAdapter extends ArrayAdapter {
 
 
     static class DataHandler {
-        TextView tv, tv1, tv2, tv3, tv4;
+        TextView tv, tv1, tv2, tv3, tv4, tv5, tv6;
     }
 
     List list = new ArrayList();
@@ -68,19 +68,28 @@ public class CustomListAdapter extends ArrayAdapter {
             handler.tv1 = (TextView)row.findViewById(R.id.listTextReason);
             handler.tv2 = (TextView)row.findViewById(R.id.fromText);
             handler.tv3 = (TextView)row.findViewById(R.id.toText);
+            handler.tv4 = (TextView)row.findViewById(R.id.reasonLabel);
+            handler.tv5 = (TextView)row.findViewById(R.id.fromLabel);
+            handler.tv6 = (TextView)row.findViewById(R.id.toLabel);
             row.setTag(handler);
         }
         else {
             handler = (DataHandler) row.getTag();
         }
 
-//        Typeface one = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/BebasNeue Bold.ttf");
+        Typeface one = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/AvenirLTStd-Book.otf");
         DataProvider provider = (DataProvider) this.getItem(position);
         handler.tv.setText(provider.getRollno());
         handler.tv1.setText(provider.getReason());
         handler.tv2.setText(provider.getFrom());
         handler.tv3.setText(provider.getTo());
-//        handler.tv.setTypeface(one);
+        handler.tv.setTypeface(one);
+        handler.tv1.setTypeface(one);
+        handler.tv2.setTypeface(one);
+        handler.tv3.setTypeface(one);
+        handler.tv4.setTypeface(one);
+        handler.tv5.setTypeface(one);
+        handler.tv6.setTypeface(one);
         handler.tv.setTextSize(30);
         handler.tv1.setTextSize(20);
         handler.tv2.setTextSize(20);

@@ -4,12 +4,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +50,7 @@ public class TeacherActivity extends AppCompatActivity {
     DataProvider itemValue;
     FirebaseAuth mAuth;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
+    TextView title;
 
     DatabaseReference root;
     DatabaseReference adv;
@@ -64,7 +67,6 @@ public class TeacherActivity extends AppCompatActivity {
     List<String> roll = new ArrayList<String>();
     List<String> random = new ArrayList<String>();
     List<String> adv_list = new ArrayList<String>();
-//    List<DatabaseReference> od_student_list = new ArrayList<DatabaseReference>();
 
     String flag = "", reason = "", from = "", to = "", fullday = "";
 
@@ -78,7 +80,9 @@ public class TeacherActivity extends AppCompatActivity {
         adv = root.child("Advisors");
         student = root.child("Student");
         listView = (ListView)findViewById(R.id.listView);
-
+        title = (TextView)findViewById(R.id.pendingTitle);
+        Typeface one = Typeface.createFromAsset(getAssets(), "fonts/AvenirLTStd-Book.otf");
+        title.setTypeface(one);
         student.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
