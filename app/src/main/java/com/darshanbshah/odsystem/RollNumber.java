@@ -111,21 +111,9 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
                 }
                 if (lst.contains(mAuth.getCurrentUser().getEmail())) {
                     startActivity(new Intent(getApplicationContext(), TeacherActivity.class));
+                    finish();
                 }
                 else {
-//                    SharedPreferences preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
-//
-//                    if(preferences.getBoolean("activity_executed", false)){
-//                        Intent intent = new Intent(RollNumber.this, MainActivity.class);
-//                        startActivity(intent);
-//                        finish();
-//                        dialog.hide();
-//                    }
-//                    else {
-//                        SharedPreferences.Editor edit = preferences.edit();
-//                        edit.putBoolean("activity_executed", true);
-//                        edit.commit();
-//                    }
                     dialog.hide();
                 }
             }

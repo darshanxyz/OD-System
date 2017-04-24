@@ -63,7 +63,8 @@ public class TeacherActivity extends AppCompatActivity {
     String adv_name, key, value, uid = "";
     List<String> roll = new ArrayList<String>();
     List<String> random = new ArrayList<String>();
-    List<DatabaseReference> od_student_list = new ArrayList<DatabaseReference>();
+    List<String> adv_list = new ArrayList<String>();
+//    List<DatabaseReference> od_student_list = new ArrayList<DatabaseReference>();
 
     String flag = "", reason = "", from = "", to = "", fullday = "";
 
@@ -121,6 +122,10 @@ public class TeacherActivity extends AppCompatActivity {
                     if (mAuth.getCurrentUser().getEmail().equals(data.getValue().toString())) {
                         adv_name = dataSnapshot.getKey();
                     }
+                }
+                for(DataSnapshot dsp : dataSnapshot.getChildren()){
+                    adv_list.add(String.valueOf(dsp.getValue()));
+                    Log.e("EMAILS: ", String.valueOf(dsp.getValue()));
                 }
             }
 
@@ -235,6 +240,7 @@ public class TeacherActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 //                Toast.makeText(getApplicationContext(), String.valueOf(position), Toast.LENGTH_SHORT).show();
+                Log.e("RCPT", String.valueOf(adv_list.size()));
                 builder = new AlertDialog.Builder(TeacherActivity.this);
                 builder.setPositiveButton("Approve", new DialogInterface.OnClickListener() {
                     @Override
@@ -277,6 +283,13 @@ public class TeacherActivity extends AppCompatActivity {
 
                             }
                         });
+
+                        recepients = adv_list.toArray(new String[0]);
+                        Log.e("RCPTSIZE", String.valueOf(recepients.length));
+                        for (int i = 0; i < recepients.length; i++) {
+                            Log.e("RECPT", recepients[i]);
+                        }
+
                         TextView textView = (TextView)findViewById(R.id.listText);
                         textView.setTextColor(Color.parseColor("#12bfac"));
                         Intent intent = new Intent(Intent.ACTION_SEND);
