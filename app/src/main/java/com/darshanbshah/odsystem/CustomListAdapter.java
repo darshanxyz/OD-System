@@ -40,6 +40,8 @@ public class CustomListAdapter extends ArrayAdapter {
     @Override
     public void remove(Object object) {
         super.remove(object);
+//        DataProvider test = (DataProvider)object;
+//        Log.e("list debug",test.getKey());
         list.remove(object);
     }
 

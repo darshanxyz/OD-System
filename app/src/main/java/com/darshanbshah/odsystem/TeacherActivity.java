@@ -262,6 +262,11 @@ public class TeacherActivity extends AppCompatActivity {
                                             od_flag.setValue(0);
                                             od_student = od.child(adv_name).child(item);
                                             od_student.removeValue();
+                                            //segment
+                                            adapter.remove(item_key);
+                                            adapter.notifyDataSetChanged();
+                                            //end segment
+
                                         }
                                     }
                                 }
