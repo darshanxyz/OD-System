@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
@@ -8,26 +9,31 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.darshanbshah.odsystem.Login">
+    tools:context="com.darshanbshah.odsystem.Login"
+    android:background="@color/colorPrimary">
+
+    <com.google.android.gms.common.SignInButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sign_in_button"
+        android:background="@color/colorPrimary"
+        app:buttonSize="wide"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="72dp"></com.google.android.gms.common.SignInButton>
 
     <TextView
         android:text="OD SYSTEM"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:id="@+id/textView3"
         android:typeface="sans"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="36sp"
         android:textAlignment="center"
+        android:textColor="@color/colorAccent"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
-
-    <com.google.android.gms.common.SignInButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="186dp"
-        android:id="@+id/sign_in_button"
-        android:layout_centerHorizontal="true"></com.google.android.gms.common.SignInButton>
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="114dp" />
 
 </RelativeLayout>

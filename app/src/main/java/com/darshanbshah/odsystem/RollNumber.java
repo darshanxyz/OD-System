@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -99,6 +100,8 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
         dialog.setMessage("Please Wait");
         dialog.show();
 
+
+
         adv.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -110,19 +113,20 @@ public class RollNumber extends AppCompatActivity implements AdapterView.OnItemS
                     startActivity(new Intent(getApplicationContext(), TeacherActivity.class));
                 }
                 else {
-                    SharedPreferences preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
-
-                    if(preferences.getBoolean("activity_executed", false)){
-                        Intent intent = new Intent(RollNumber.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                        dialog.hide();
-                    }
-                    else {
-                        SharedPreferences.Editor edit = preferences.edit();
-                        edit.putBoolean("activity_executed", true);
-                        edit.commit();
-                    }
+//                    SharedPreferences preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
+//
+//                    if(preferences.getBoolean("activity_executed", false)){
+//                        Intent intent = new Intent(RollNumber.this, MainActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                        dialog.hide();
+//                    }
+//                    else {
+//                        SharedPreferences.Editor edit = preferences.edit();
+//                        edit.putBoolean("activity_executed", true);
+//                        edit.commit();
+//                    }
+                    dialog.hide();
                 }
             }
 
