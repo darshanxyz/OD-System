@@ -11,8 +11,3 @@ We intend to make it easy for the teachers to track and manage the ODs and for t
 
 # What’s the plan for the near-future for this application?
 We intend to sync it with the official database of the AUMS. This will be of great use for the next batches to come!
-
-# Our TEAM!
-1. Prashanth S – CB.EN.U4CSE14434
-2. Darshan B Shah – CB.EN.U4CSE14306
-
